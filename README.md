@@ -25,27 +25,42 @@ The framework is designed for large-scale datasets and focuses on efficient trai
 
 
 ├── src/
+
 │ ├── dataloader.py # Dataset loader (handles caching + preprocessing)
+
 │ ├── preprocessing.py # Hybrid preprocessing pipeline (SNR + QS + PCA)
+
 │ ├── net.py # ConvTF model
+
 │ ├── trainer.py # Training loop
+
 │ └── utils.py # Evaluation (GE, AES S-box, etc.)
 │
 ├── cache/ # Sample cache (raw / baseline)
+
 ├── cache_wide/ # SNR-based preprocessing cache
+
 ├── cache_hybrid/ # Hybrid preprocessing cache (proposed method)
+
 │
 ├── Result22/ # Example results (baseline)
+
 ├── Result33/ # Example results (ConvTF + preprocessing)
 │
 ├── main_pytorch.py # Main training script (baseline)
+
 ├── main_pytorch_v2.py # SNR-based version
+
 ├── main_pytorch_v3.py # Hybrid preprocessing (recommended)
 │
 ├── analyze_pytorch.py # Final evaluation script
+
 ├── HQS_results.ipynb # Visualization notebook
+
 ├── Preprocessing_newWay.ipynb # Preprocessing exploration
+
 ├── README.md
+
 └── requirements.txt
 
 
