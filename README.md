@@ -1,6 +1,6 @@
 # Side_Channel_attack_Hybrid-QS
 PyTorch framework for profiling side-channel attacks on AES using deep learning, featuring hybrid preprocessing with SNR and Quadrant Scan and evaluation via Guessing Entropy.
-# Deep Learning Side-Channel Analysis Framework (CHES 2025)
+# Deep Learning Side-Channel Analysis Framework 
 
 ## Overview
 
