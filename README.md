@@ -1,10 +1,10 @@
 # Side_Channel_attack_Hybrid-QS
 
-PyTorch framework for profiling side-channel attacks on AES using deep learning, featuring hybrid preprocessing with SNR and Quadrant Scan (QS), and evaluation via Guessing Entropy (GE).
+PyTorch framework for profiling side-channel attacks on AES using deep learning, featuring hybrid preprocessing with Signal-to-Noise Ratio (SNR) and Quadrant Scan (QS), and evaluation via Guessing Entropy (GE).
 
 ---
 
-# Deep Learning Side-Channel Analysis Framework 
+# Deep Learning Side-Channel Analysis Framework
 
 ## Overview
 
@@ -15,78 +15,42 @@ It supports multiple preprocessing strategies:
 - SNR-based feature selection
 - Hybrid preprocessing (SNR + Quadrant Scan + PCA)
 
+The framework is designed for efficient experimentation, reproducibility, and evaluation using Guessing Entropy (GE).
 
 ---
 
 ## Features
 
 - ConvTF (Convolutional–Transformer) model for SCA  
-- Hybrid preprocessing (SNR + Quadrant Scan + PCA)  
-- Automatic caching (avoids recomputation)  
-- Optional hybrid training (profiling + attack traces)  
+- Hybrid preprocessing (SNR + QS + PCA)  
+- Automatic caching to avoid recomputation  
+- Hybrid training (profiling + attack traces)  
 - Guessing Entropy (GE) evaluation and plotting  
 - Multiple experiment configurations  
 
 ---
 
-## Repository Structure
-## Repository Structure
-
-
-├── src/
-│ ├── dataloader.py # Main dataloader (hybrid / updated)
-│ ├── dataloader_v0.py # Baseline dataloader
-│ ├── preprocessing.py # Hybrid preprocessing (SNR + QS + PCA)
-│ ├── net.py # ConvTF model
-│ ├── trainer.py # Training loop
-│ └── utils.py # Evaluation (GE, AES S-box, etc.)
-│
-├── cache/ # Sample cache (baseline)
-├── cache_wide/ # SNR preprocessing cache
-├── cache_hybrid/ # Hybrid preprocessing cache
-│
-├── src/ # Core source code
-│
-├── main_pytorch.py # Main script (hybrid / updated pipeline)
-├── main_pytorch0.py # Baseline version (older pipeline)
-│
-├── analyze_pytorch.py # Evaluation script
-│
-├── HQS_results.ipynb # Visualization notebook
-├── Preprocessing_newWay.ipynb # Preprocessing experiments
-│
-├── README.md
-└── requirements.txt
-
----
-
 ## Important: Differences Between Main Scripts
 
-- **`main_pytorch.py`**
-  - Uses updated `dataloader.py`
-  - Supports hybrid preprocessing and improved pipeline
-  - Designed for better performance and flexibility
-
-- **`main_pytorch0.py`**
-  - Uses `dataloader_v0.py`
-  - Simpler / baseline version
-  - Useful for comparison experiments
+### `main_pytorch.py`
+- Uses `dataloader.py`
+- Mixes **~80K attack traces** with profiling data for training  
+- Properly applies the mixed dataset to training  
+- Leaves a larger portion of attack traces for evaluation  
+- Implements **true hybrid training**
 
 ---
 
-## Preprocessing Selection (Very Important)
+## Preprocessing Selection 
 
-The preprocessing type is controlled by the **data path inside the dataloader**.
 
- To switch between preprocessing methods, change the dataset/cache directory path:
+To switch todifferent preprocessing methods, update the cache directory:
 
-| Preprocessing Type | Folder |
-|-------------------|--------|
-| Raw (baseline)    | `cache/` |
-| SNR-based         | `cache_wide/` |
-| Hybrid (SNR + QS) | `cache_hybrid/` |
+- `cache/` → Raw baseline preprocessed
+- `cache_wide/` → SNR-based preprocessed
+- `cache_hybrid/` → Hybrid preprocessed (SNR + QS)  
 
- Make sure the dataloader points to the correct directory depending on your experiment.
+ Make sure the dataloader points to the correct directory before running experiments.
 
 ---
 
@@ -94,35 +58,83 @@ The preprocessing type is controlled by the **data path inside the dataloader**.
 
 ### 1. Install Dependencies
 
-```bash
-pip install -r requirements.txt
-
-
 ## 2. Dataset
 
  The full dataset is **NOT included** due to its large size.
 
-- Only sample data / small caches are provided in this repository  
+- Only sample data / small caches are provided  
 - The full processed dataset is too large to upload  
 
- You must download the CHES 2025 dataset separately and place it in:
-./Dataset/CHES_2025/CHES_Challenge.h5
+ Download the CHES 2025 dataset from : https://pace-tl.gitbook.io/ches-challenge-2025
+ and place it at:
 
+`./Dataset/CHES_2025/CHES_Challenge.h5`
 
 ---
 
 ## 3. Running the Code
 
-### Recommended (Hybrid Model)
+### Training
 
 ```bash
 python main_pytorch.py
+```
+
+### Evaluation
+
+```bash
+python analyze_pytorch.py
+```
+
+---
+
+## Hybrid Preprocessing Pipeline
+
+If no cache is found, preprocessing runs automatically:
+
+- Compute SNR and select Points of Interest (PoIs)  
+- Apply Quadrant Scan (QS)  
+- Crop windows around PoIs  
+- Normalize traces (Z-score)  
+- Apply PCA (≤1024 dimensions, 99% variance)  
+- Save results into `cache_hybrid/`  
+
+---
+
+## Outputs
+
+- Guessing Entropy (GE) curves  
+- NTGE values  
+- Saved `.npy` files  
+- Plots (`.png`)  
+
+---
+
+## Results
+
+Each experiment folder contains:
+
+- `training_log.csv`  
+- Model checkpoints (`.pth`)  
+- GE curves (`.npy`, `.png`)  
+- Final results (`result_*.npy`)  
+
+---
+
+## Notes
+
+- Only sample data is included  
+- Full preprocessing is computationally expensive  
+- Cached data is reused automatically if available  
+- Dataset paths may need manual adjustment  
+
+---
 
 
 
+## Disclaimer
 
+This project is intended for research and educational purposes in evaluating side-channel vulnerabilities.
 
-
-
-
-
+```bash
+pip install -r requirements.txt
