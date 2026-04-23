@@ -87,6 +87,17 @@ python analyze_pytorch.py
 ```
 
 ---
+## Notebooks 
+
+- `HQS_results.ipynb`  
+  → Visualization of results (GE curves, performance plots)
+
+- `Preprocessing_newWay.ipynb`  
+  → Step-by-step exploration of the preprocessing pipeline  
+  → Shows experiments and reasoning behind the final hybrid method  
+  → The final implementation is in: `src/preprocessing.py`
+
+---
 
 ## Hybrid Preprocessing Pipeline
 
